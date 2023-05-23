@@ -4,7 +4,8 @@ This is a project for CSE 185. Genome Sizer is a tool that takes in a .fasta fil
 
 # Install Instructions
 Installation requires the ... and ... libraries to be installed
-"""
+```
 pip install ... 
-"""
+```
+
 
