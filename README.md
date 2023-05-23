@@ -17,3 +17,12 @@ If the install was successful, typing genomesizer --help should show a relevant 
 The basic usage of ```genomesizer``` is 
 ```
 genomesizer [
+```
+To run ```genomesizer``` on a small test example
+```
+genomesizer 
+```
+
+# genomesizer options
+There are 3 required inputs for the ```genomesizer``` tool. Users may specify the options below:
+ - ```-k```, ```--kmer-size``` 
