@@ -26,3 +26,7 @@ genomesizer
 # genomesizer options
 There are 3 required inputs for the ```genomesizer``` tool. Users may specify the options below:
  - ```-k```, ```--kmer-size``` 
+
+# File Format
+
+# Contributors
