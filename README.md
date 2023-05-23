@@ -1,4 +1,4 @@
-# GenomeSizer (CSE185project)
+# GenomeSizer (CSE185project) in progress
 
 This is a project for CSE 185. GenomeSizer is a tool that takes in a .fasta file and outputs an estimated genome size. This is comparable to the kmergenie tool for genome size. 
 
