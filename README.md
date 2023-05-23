@@ -11,7 +11,7 @@ Once the required libraries are installed, you can install genomesizer using the
 ```
 python setup.py install
 ```
-If the install was successful, typing genomesizer --help should show a relevant message.
+If the install was successful, typing ```genomesizer --help``` should show a relevant message.
 
 # Basic Usage
 The basic usage of ```genomesizer``` is 
