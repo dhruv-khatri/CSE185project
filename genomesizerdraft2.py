@@ -49,7 +49,7 @@ except FileNotFoundError:
 # Check if help message flag is provided
 if(args.h):
     # Print help message
-    # TODO
+    parser.print_help()
     print()
 
 # Check if output file location exists
@@ -107,7 +107,21 @@ with open(input_file, 'r') as file:
         else:
             print("User provided k-mer size larger than read length. \nUsing default value.\n")
     # Begin counting kmers
-    #TODO
+    while True:
+        # Read the next 4 lines as a group
+        header = file.readline().strip()
+        sequence = file.readline().strip()
+        plus = file.readline().strip()
+        quality = file.readline().strip()
+
+        # Check if end of file is reached
+        if(not header):
+            break
+
+        # Process the sequence to count kmers
+        for i in range(len(sequence) - kmer_size + 1):
+            kmer = sequence[i : i + kmer_size]
+            kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
     file.close()
 
 # Add kmer counts to output .histo file
