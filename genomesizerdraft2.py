@@ -92,6 +92,7 @@ genome_size=None
 mean_kmer_coverage=None
 kmer_size=None
 # For now, assumes all reads are of equal length or filled with N to be of equal length
+# TODO implement for fastq containing reads of unequal length
 with open(input_file, 'r') as file:
     # Get read length
     # Process the first 4 lines of file outside loop to set read length and kmer size
@@ -155,7 +156,7 @@ with open(input_file, 'r') as file:
     mean_kmer_coverage=num_kmers_sequenced/num_kmers_unique
 
     # Calculate Genome Size
-    genome_size=number_reads*(read_length-kmer_size+1)/mean_kmer_coverage
+    genome_size=int(number_reads*(read_length-kmer_size+1)/mean_kmer_coverage)
     file.close()
 
 # Print output genome size and other relevant statistics
