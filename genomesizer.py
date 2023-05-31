@@ -25,7 +25,9 @@ if args.kmersize is not None:
         sys.exit(1)
 else:
     kmersize = 21
-output_file_location=args.o
+
+    
+output_file_location = args.output
 
 """
 Begin pre-processing user input. Catch any degenerate input
