@@ -10,7 +10,6 @@ parser.add_argument('input_file', help='Path to the file')
 # -k is an optional argument that presets k-mer size
 parser.add_argument('-k', '--kmersize', help='length of k-mers for size estimation')
 # -h is an optional argument for help message
-parser.add_argument('-h', '--help', help='brings up this help message', action='store_true')
 parser.add_argument('-o', '--output', help="output file location")
 
 
