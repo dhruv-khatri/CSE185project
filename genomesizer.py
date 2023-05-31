@@ -17,11 +17,14 @@ parser.add_argument('-o', '--output', help="output file location")
 args=parser.parse_args()
 
 input_file=args.input_file
-try:
-    kmersize=int(args.k)
-except ValueError:
-    print("Value provided to -k option was not a number. Exiting now.\n")
-    sys.exit(1)
+if args.kmersize is not None:
+    try:
+        kmersize = int(args.kmersize)
+    except ValueError:
+        print("Value provided to --kmersize option was not a number. Exiting now.\n")
+        sys.exit(1)
+else:
+    kmersize = 21
 output_file_location=args.o
 
 """
