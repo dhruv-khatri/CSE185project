@@ -49,8 +49,7 @@ except FileNotFoundError:
 # Check if help message flag is provided
 if(args.h):
     # Print help message
-    # TODO
-    print()
+    parser.print_help()
 
 # Check if output file location exists
 if(output_file_location==None):
@@ -88,12 +87,20 @@ with open(input_file, 'r') as file_check:
 # Our kmers and counts will be stored in the dictionary kmer_counts
 read_length=0
 kmer_counts={}
+number_reads=0
+genome_size=None
+mean_kmer_coverage=None
+kmer_size=None
 # For now, assumes all reads are of equal length or filled with N to be of equal length
+# TODO implement for fastq containing reads of unequal length
 with open(input_file, 'r') as file:
     # Get read length
-    # skip first header
-    file.readline()
-    sequence=file.readline()
+    # Process the first 4 lines of file outside loop to set read length and kmer size
+    header = file.readline().strip()
+    sequence = file.readline().strip()
+    plus = file.readline().strip()
+    quality = file.readline().strip()
+
     for base in sequence:
         read_length+=1
     # read length should now be properly set
@@ -106,12 +113,84 @@ with open(input_file, 'r') as file:
             kmer_size=kmersize
         else:
             print("User provided k-mer size larger than read length. \nUsing default value.\n")
-    # Begin counting kmers
-    #TODO
+    
+    # Process first sequence to count kmers
+    for i in range(len(sequence) - kmer_size + 1):
+        kmer = sequence[i : i + kmer_size]
+        kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+
+    # Begin counting kmers for rest of file
+    while True:
+        # Read the next 4 lines as a group
+        header = file.readline().strip()
+        sequence = file.readline().strip()
+        plus = file.readline().strip()
+        quality = file.readline().strip()
+
+        # Check if end of file is reached
+        # Modified to account for degenerate input
+        if(not header or not sequence or not plus or not quality):
+            break
+
+        # increment read count by 1
+        number_reads+=1
+
+        # Process the sequence to count kmers
+        for i in range(len(sequence) - kmer_size + 1):
+            kmer = sequence[i : i + kmer_size]
+            kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+    # Get Mean Kmer Coverage
+    
+    # Get number of unique kmers
+    num_kmers_unique=0.0
+    for kmer in kmer_counts.keys():
+        num_kmers_unique+=1
+    
+    num_kmers_sequenced=0.0
+
+    # Get total number of kmers sequenced
+    for kmer in kmer_counts.keys():
+        num_kmers_sequenced+=kmer_counts[kmer]
+
+    # Calculate Mean Kmer Coverage
+    mean_kmer_coverage=num_kmers_sequenced/num_kmers_unique
+
+    # Calculate Genome Size
+    genome_size=int(number_reads*(read_length-kmer_size+1)/mean_kmer_coverage)
     file.close()
 
+# Print output genome size and other relevant statistics
+# TODO: Make this message look prettier and more user-friendly
+print("File processing completed")
+print("Genome size: "+genome_size)
+print("Mean Kmer Coverage: "+mean_kmer_coverage)
+print("Number of reads: "+number_reads)
+print("Read length: "+read_length)
+print("Size for kmers used: "+kmer_size)
+print("Generating kmer distribution histogram file")
+
 # Add kmer counts to output .histo file
-# TODO
+
+# Create kmer distribution histogram
+histogram = {}
+
+# Count kmer occurrences
+for count in kmer_counts.values():
+    histogram[count] = histogram.get(count, 0) + 1
+
+# Sort the histogram dictionary by key (k-mer count)
+sorted_histogram = sorted(histogram.items())
+
+# Create the histogram file
+histo_file = open(output_file_location, "w")
+
+# Write the histogram data to the file
+for count, frequency in sorted_histogram:
+    histo_file.write(f"{count}\t{frequency}\n")
+
+histo_file.close()
+
+print("File generated succesfully")
 
 
 sys.exit(0)
