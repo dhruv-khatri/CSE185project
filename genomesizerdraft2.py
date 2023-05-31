@@ -140,7 +140,7 @@ with open(input_file, 'r') as file:
             kmer = sequence[i : i + kmer_size]
             kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
     # Get Mean Kmer Coverage
-
+    
     # Get number of unique kmers
     num_kmers_unique=0.0
     for kmer in kmer_counts.keys():
@@ -170,7 +170,27 @@ print("Size for kmers used: "+kmer_size)
 print("Generating kmer distribution histogram file")
 
 # Add kmer counts to output .histo file
-# TODO
+
+# Create kmer distribution histogram
+histogram = {}
+
+# Count kmer occurrences
+for count in kmer_counts.values():
+    histogram[count] = histogram.get(count, 0) + 1
+
+# Sort the histogram dictionary by key (k-mer count)
+sorted_histogram = sorted(histogram.items())
+
+# Create the histogram file
+histo_file = open(output_file_location, "w")
+
+# Write the histogram data to the file
+for count, frequency in sorted_histogram:
+    histo_file.write(f"{count}\t{frequency}\n")
+
+histo_file.close()
+
+print("File generated succesfully")
 
 
 sys.exit(0)
