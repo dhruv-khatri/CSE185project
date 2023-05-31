@@ -25,8 +25,9 @@ python genomesizer.py -k 25 -o output.histo example.fastq
 ```
 
 # genomesizer options
-There are 3 required inputs for the ```genomesizer``` tool. Users may specify the options below:
- - ```-k```, ```--kmer-size``` 
+There are 2 optional inputs for the ```genomesizer``` tool. Users may specify the options below:
+ - ```-k```, ```--kmer-size``` length of k-mers for size estimation
+ - ```-o```, ```--output``` output file location
 
 # File Format
 There will be a .histo file output.
