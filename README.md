@@ -3,24 +3,25 @@
 This is a project for CSE 185. GenomeSizer is a tool that takes in a .fasta file and outputs an estimated genome size. This is comparable to the kmergenie tool for genome size. 
 
 # Install Instructions
-Installation requires the ... and ... libraries to be installed
+Installation requires the argparse and matplotlib libraries to be installed
 ```
-pip install ... 
+pip install argparse
+pip install matplotlib
 ```
 Once the required libraries are installed, you can install genomesizer using the following command.
 ```
-python setup.py install
+python genomesizer.py install
 ```
 If the install was successful, typing ```genomesizer --help``` should show a relevant message.
 
 # Basic Usage
 The basic usage of ```genomesizer``` is 
 ```
-genomesizer [
+python genomesizer.py <options> input_file
 ```
 To run ```genomesizer``` on a small test example
 ```
-genomesizer 
+python genomesizer.py -k 25 -o output.histo example.fastq
 ```
 
 # genomesizer options
