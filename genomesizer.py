@@ -121,6 +121,7 @@ with open(input_file, 'r') as file:
 
     # Placeholder default value for kmer_size
     kmer_size=np.min(read_lengths)/2
+    kmer_size = int(kmer_size)
     # set k-mer length manually if it is provided by user
     if(not kmersize==None):
         if(not kmersize>np.min(read_lengths)):
@@ -179,11 +180,11 @@ with open(input_file, 'r') as file:
 # Print output genome size and other relevant statistics
 print("----------------------------------------------------------------------")
 print("File processing completed")
-print("Genome size: "+genome_size)
-print("Mean Kmer Coverage: "+mean_kmer_coverage)
-print("Number of reads: "+number_reads)
-print("Average read length: "+avg_read_length)
-print("Size for kmers used: "+kmer_size)
+print("Genome size: "+ str(genome_size))
+print("Mean Kmer Coverage: "+ str(mean_kmer_coverage))
+print("Number of reads: "+ str(number_reads))
+print("Average read length: "+ str(avg_read_length))
+print("Size for kmers used: "+ str(kmer_size))
 print("Generating kmer distribution histogram file...")
 
 # Add kmer counts to output .histo file
@@ -196,7 +197,7 @@ for count in kmer_counts.values():
     histogram[count] = histogram.get(count, 0) + 1
     
 # Fill in zero frequencies
-for i in range (1, np.max(kmer_counts.values())+1):
+for i in range (1, np.max(list(kmer_counts.values()))+1):
     if(i in histogram.keys()):
         continue
     else:
