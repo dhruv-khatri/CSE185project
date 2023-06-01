@@ -50,11 +50,6 @@ except FileNotFoundError:
     print("File could not be opened. \nUsage: python genomesizer.py <options> file_name\n")
     sys.exit(1)
 
-# Check if help message flag is provided
-if(args.h):
-    # Print help message
-    parser.print_help()
-
 # Check if output file location exists
 if(output_file_location==None):
     print("No output file location specified. Using default.\n")
