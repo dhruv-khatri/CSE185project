@@ -75,8 +75,7 @@ with open(input_file, 'r') as file_check:
         print("File type is invalid. .fastq and .fq types are supported\n")
         sys.exit(1)
     first_sequence=file_check.readline()
-    if(not first_sequence.startswith('A') or not first_sequence.startswith('T')
-       or not first_sequence.startswith('C') or not first_sequence.startswith('G')):
+    if not (first_sequence.startswith('A') or first_sequence.startswith('T') or first_sequence.startswith('C') or first_sequence.startswith('G')):
         print("File type is invalid. .fastq and .fq types are supported\n")
         sys.exit(1)
     first_plus=file_check.readline()
