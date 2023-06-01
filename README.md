@@ -24,7 +24,7 @@ python genomesizer.py [inputfile] <options>
 ```
 To run ```genomesizer``` on a small test example
 ```
-python genomesizer.py -k 25 -o output.histo example.fastq
+python genomesizer.py example.fastq -k 25 -o output.histo
 ```
 
 # genomesizer options
