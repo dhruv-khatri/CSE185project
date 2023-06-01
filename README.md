@@ -1,6 +1,6 @@
 # GenomeSizer (CSE185project) in progress
 
-GenomeSizer is a tool that takes in a .fasta file and outputs an estimated genome size and histogram file. This is comparable to the kmergenie tool for genome size.
+The size of a genome is necessary information for analyses such as quality control, comparative genomics, and metagenomics. GenomeSizer is a tool that takes in a .fasta file and outputs an estimated genome size and histogram file. This is comparable to the kmergenie and jellyfish tools for genome size and histogram output.
 
 # Install Instructions
 Installation requires the argparse, numpy, and matplotlib (only for histogram plotting) libraries to be installed
@@ -11,14 +11,16 @@ pip install numpy
 ```
 Once the required libraries are installed, you can install genomesizer using the following command.
 ```
-python genomesizer.py install
+git clone https://github.com/dhruv-khatri/GenomeSizer
+  cd main
+  make
 ```
-If the install was successful, typing ```genomesizer --help``` should show a relevant message.
+If the install was successful, typing ```genomesizer.py --help``` should show a relevant message.
 
 # Basic Usage
 The basic usage of ```genomesizer``` is 
 ```
-python genomesizer.py <options> input_file
+python genomesizer.py [inputfile] <options>
 ```
 To run ```genomesizer``` on a small test example
 ```
