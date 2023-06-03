@@ -2,6 +2,7 @@ import argparse
 import os
 import sys
 import numpy as np
+import copy
 # Parse command line arguments
 parser=argparse.ArgumentParser(description='Genome size estimator')
 
@@ -154,21 +155,58 @@ with open(input_file, 'r') as file:
         for i in range(len(sequence) - kmer_size + 1):
             kmer = sequence[i : i + kmer_size]
             kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+
+    # Create kmer distribution histogram
+    histogram = {}
+
+    # Count kmer occurrences
+    for count in kmer_counts.values():
+        histogram[count] = histogram.get(count, 0) + 1
+    
+    # Fill in zero frequencies
+    for i in range (1, np.max(list(kmer_counts.values()))+1):
+        if(i in histogram.keys()):
+            continue
+        else:
+            histogram[i]=0
+
+    # Sort the histogram dictionary by key (k-mer count)
+    sorted_histogram = sorted(histogram.items())
+
     # Get Mean Kmer Coverage
-    
-    # Get number of unique kmers
-    num_kmers_unique=0.0
-    for kmer in kmer_counts.keys():
-        num_kmers_unique+=1
-    
-    num_kmers_sequenced=0.0
+    # Trim out reads that are probably sequence errors
 
-    # Get total number of kmers sequenced
-    for kmer in kmer_counts.keys():
-        num_kmers_sequenced+=kmer_counts[kmer]
+    trimmed_sorted_histogram=dict(sorted_histogram)
+    cut_freq=-1
+    max_key=max(list(trimmed_sorted_histogram.keys()))
+    # Loop below breaks in small datasets
+    #for frequency in range(1, max_key-1):
+    #    if(trimmed_sorted_histogram[frequency]<trimmed_sorted_histogram[frequency+1]
+    #       and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
+    #        cut_freq=frequency
+    #        break
+    cut_freq=1
+    if(not cut_freq==-1):
+        for i in range(1, cut_freq+1):
+            trimmed_sorted_histogram.pop(i)
 
-    # Calculate Mean Kmer Coverage
-    mean_kmer_coverage=num_kmers_sequenced/num_kmers_unique
+    min_key=min(list(trimmed_sorted_histogram.keys()))
+    # Walk along histogram to get mean kmer coverage
+    for frequency in range(min_key, max_key-3):
+        if(trimmed_sorted_histogram[frequency]>trimmed_sorted_histogram[frequency+1]
+           and trimmed_sorted_histogram[frequency+1]>trimmed_sorted_histogram[frequency+2]
+           and trimmed_sorted_histogram[frequency+2]>trimmed_sorted_histogram[frequency+3]
+           and trimmed_sorted_histogram[frequency+3]>trimmed_sorted_histogram[frequency+4]
+           and trimmed_sorted_histogram[frequency+4]>trimmed_sorted_histogram[frequency+5]
+           and trimmed_sorted_histogram[frequency+5]>trimmed_sorted_histogram[frequency+6]
+           and trimmed_sorted_histogram[frequency+6]>trimmed_sorted_histogram[frequency+7]
+           and trimmed_sorted_histogram[frequency+7]>trimmed_sorted_histogram[frequency+8]
+           and trimmed_sorted_histogram[frequency+8]>trimmed_sorted_histogram[frequency+9]
+           and trimmed_sorted_histogram[frequency+9]>trimmed_sorted_histogram[frequency+10]):
+            mean_kmer_coverage=frequency
+            break
+
+
 
     # Calculate average read size
     avg_read_length=np.mean(read_lengths)
@@ -188,23 +226,6 @@ print("Size for kmers used: "+ str(kmer_size))
 print("Generating kmer distribution histogram file...")
 
 # Add kmer counts to output .histo file
-
-# Create kmer distribution histogram
-histogram = {}
-
-# Count kmer occurrences
-for count in kmer_counts.values():
-    histogram[count] = histogram.get(count, 0) + 1
-    
-# Fill in zero frequencies
-for i in range (1, np.max(list(kmer_counts.values()))+1):
-    if(i in histogram.keys()):
-        continue
-    else:
-        histogram[i]=0
-
-# Sort the histogram dictionary by key (k-mer count)
-sorted_histogram = sorted(histogram.items())
 
 # Create the histogram file
 histo_file = open(output_file_location, "w")
