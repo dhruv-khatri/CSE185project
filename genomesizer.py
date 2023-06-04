@@ -179,20 +179,27 @@ with open(input_file, 'r') as file:
     trimmed_sorted_histogram=dict(sorted_histogram)
     cut_freq=-1
     max_key=max(list(trimmed_sorted_histogram.keys()))
-    # Loop below breaks in small datasets
-    #for frequency in range(1, max_key-1):
-    #    if(trimmed_sorted_histogram[frequency]<trimmed_sorted_histogram[frequency+1]
-    #       and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
-    #        cut_freq=frequency
-    #        break
-    cut_freq=1
+    # TODO: Make dynamic algorithm for finding cut frequency and count
+    # observed kmers manually (don't know how many error reads)
+
+    # Loop below inaccurate in small datasets
+    for frequency in range(1, max_key-1):
+        if(trimmed_sorted_histogram[frequency]<trimmed_sorted_histogram[frequency+1]
+           and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
+            cut_freq=frequency
+            break
+    if (cut_freq>50):
+        cut_freq=1
+    print(cut_freq)
+    error_kmers=0
     if(not cut_freq==-1):
         for i in range(1, cut_freq+1):
+            error_kmers+=trimmed_sorted_histogram[i]*i
             trimmed_sorted_histogram.pop(i)
 
     min_key=min(list(trimmed_sorted_histogram.keys()))
     # Walk along histogram to get mean kmer coverage
-    for frequency in range(min_key, max_key-3):
+    for frequency in range(min_key, max_key-9):
         if(trimmed_sorted_histogram[frequency]>trimmed_sorted_histogram[frequency+1]
            and trimmed_sorted_histogram[frequency+1]>trimmed_sorted_histogram[frequency+2]
            and trimmed_sorted_histogram[frequency+2]>trimmed_sorted_histogram[frequency+3]
@@ -206,13 +213,17 @@ with open(input_file, 'r') as file:
             mean_kmer_coverage=frequency
             break
 
-
+    num_kmers_obs=0
+    for frequency in range(cut_freq+1,max_key+1):
+        num_kmers_obs+=trimmed_sorted_histogram[frequency]*frequency
 
     # Calculate average read size
     avg_read_length=np.mean(read_lengths)
 
     # Calculate Genome Size
-    genome_size=int(number_reads*(avg_read_length-kmer_size+1)/mean_kmer_coverage)
+    # TODO: Errors in this formula, see previous todo
+    # (number_reads*(avg_read_length-kmer_size+1)-error_kmers)
+    genome_size=int(num_kmers_obs/mean_kmer_coverage)
     file.close()
 
 # Print output genome size and other relevant statistics
@@ -220,6 +231,8 @@ print("----------------------------------------------------------------------")
 print("File processing completed")
 print("Genome size: "+ str(genome_size))
 print("Mean Kmer Coverage: "+ str(mean_kmer_coverage))
+print("Number Non-error Kmers Observed: "+ str(num_kmers_obs))
+print("Number Error Kmers Observed: "+ str(error_kmers))
 print("Number of reads: "+ str(number_reads))
 print("Average read length: "+ str(avg_read_length))
 print("Size for kmers used: "+ str(kmer_size))
