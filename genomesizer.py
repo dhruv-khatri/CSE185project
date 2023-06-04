@@ -3,6 +3,7 @@ import os
 import sys
 import numpy as np
 import copy
+from reverse_complement import reverse_complement
 # Parse command line arguments
 parser=argparse.ArgumentParser(description='Genome size estimator')
 
@@ -133,7 +134,11 @@ with open(input_file, 'r') as file:
     # Process first sequence to count kmers
     for i in range(len(sequence) - kmer_size + 1):
         kmer = sequence[i : i + kmer_size]
-        kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+        # Added checking for reverse complement
+        if(reverse_complement(kmer) in kmer_counts.keys()):
+            kmer_counts[reverse_complement(kmer)] = kmer_counts.get(kmer,0)+1
+        else:
+            kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
 
     # Begin counting kmers for rest of file
     while True:
