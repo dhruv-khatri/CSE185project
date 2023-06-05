@@ -130,15 +130,12 @@ with open(input_file, 'r') as file:
             kmer_size=kmersize
         else:
             print("User provided k-mer size larger than read length. \nUsing default value.\n")
-    
+    num_complements=0
     # Process first sequence to count kmers
     for i in range(len(sequence) - kmer_size + 1):
         kmer = sequence[i : i + kmer_size]
-        # Added checking for reverse complement
-        if(reverse_complement(kmer) in kmer_counts.keys()):
-            kmer_counts[reverse_complement(kmer)] = kmer_counts.get(kmer,0)+1
-        else:
-            kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+        kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+    
 
     # Begin counting kmers for rest of file
     while True:
@@ -159,8 +156,19 @@ with open(input_file, 'r') as file:
         # Process the sequence to count kmers
         for i in range(len(sequence) - kmer_size + 1):
             kmer = sequence[i : i + kmer_size]
-            kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
-
+            # Added checking for reverse complement
+            # TODO optimize runtime
+            # IF YOU WANT TO REVERT TO PREVIOUS VERSION FOR RUNTIME SPEED, COMMENT OUT THE FOLLOWING 5 LINES AND REMOVE A TAB FROM THE LINE AFTER
+            rev_comp=reverse_complement(kmer)
+            if(rev_comp in kmer_counts.keys()):
+                num_complements+=1
+                kmer_counts[rev_comp] = kmer_counts.get(rev_comp,0)+1
+            else:
+                kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
+        
+        # M = 114 with the change
+        # M=118 after the change
+    print(num_complements)
     # Create kmer distribution histogram
     histogram = {}
 
@@ -226,7 +234,6 @@ with open(input_file, 'r') as file:
     avg_read_length=np.mean(read_lengths)
 
     # Calculate Genome Size
-    # TODO: Errors in this formula, see previous todo
     # (number_reads*(avg_read_length-kmer_size+1)-error_kmers)
     genome_size=int(num_kmers_obs/mean_kmer_coverage)
     file.close()
