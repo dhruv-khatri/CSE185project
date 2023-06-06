@@ -14,7 +14,9 @@ parser.add_argument('-k', '--kmersize', help='length of k-mers for size estimati
 # -h is an optional argument for help message
 parser.add_argument('-o', '--output', help="output file location")
 
-
+# -c is an optional argument for maximum cut threshold for error frequencies
+parser.add_argument('-c', '--maxcut', help="""maximum threshold frequency for cutting off error 
+frequenices (caused by sequence errors). This option is recommended for small datasets.""")
 
 args=parser.parse_args()
 
@@ -28,7 +30,19 @@ if args.kmersize is not None:
 else:
     kmersize = 21
 
-    
+maxcutfreq=args.maxcut
+if (not maxcutfreq==None):
+    try:
+        maxcutfreq=int(maxcutfreq)
+        if(maxcutfreq<=0):
+            print("Value provided to --maxcut option was <= 0. Range is positive integers. Using default value")
+            maxcutfreq=1000
+    except ValueError:
+        print("Value provided to --maxcut option was not a number. Exiting now.\n")
+        sys.exit(1)
+else:
+    maxcutfreq=1000
+
 output_file_location = args.output
 
 """
@@ -192,7 +206,7 @@ with open(input_file, 'r') as file:
     trimmed_sorted_histogram=dict(sorted_histogram)
     cut_freq=-1
     max_key=max(list(trimmed_sorted_histogram.keys()))
-    # TODO: Make dynamic algorithm for finding cut frequency and count
+    # Make dynamic algorithm for finding cut frequency and count
     # observed kmers manually (don't know how many error reads)
 
     # Loop below inaccurate in small datasets
@@ -201,8 +215,12 @@ with open(input_file, 'r') as file:
            and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
             cut_freq=frequency
             break
-    # TODO make max_cut_freq an option
-    max_cut_freq=5
+    max_cut_freq=maxcutfreq
+    if (max_cut_freq>max_key):
+        print("Argument provided to -c option was greater than largest frequency. Reducing to fit data size.")
+        while(max_cut_freq>max_key):
+            max_cut_freq=int(max_cut_freq/2)
+        print("New maximum cut frequency: "+max_cut_freq)
     if (cut_freq>1000 or cut_freq>max_cut_freq):
         cut_freq=max_cut_freq
     print(cut_freq)
@@ -238,9 +256,16 @@ with open(input_file, 'r') as file:
     # Calculate average read size
     avg_read_length=np.mean(read_lengths)
 
+    # Check to see if mean kmer coverage was obtained successfully
+    if(mean_kmer_coverage==0 or mean_kmer_coverage==None):
+        print("""Mean kmer coverage could not be successfully obtained. 
+        Genome size cannot be estimated. Setting to -1. 
+        Try looking at the output histo and setting a maximum cut threshold""")
+        genome_size=-1
+        mean_kmer_coverage=-1
     # Calculate Genome Size
-    # (number_reads*(avg_read_length-kmer_size+1)-error_kmers)
-    genome_size=int(num_kmers_obs/mean_kmer_coverage)
+    else:
+        genome_size=int(num_kmers_obs/mean_kmer_coverage)
     file.close()
 
 # Print output genome size and other relevant statistics
