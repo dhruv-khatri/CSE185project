@@ -170,18 +170,14 @@ with open(input_file, 'r') as file:
         # Process the sequence to count kmers
         for i in range(len(sequence) - kmer_size + 1):
             kmer = sequence[i : i + kmer_size]
-            # Added checking for reverse complement
-            # TODO optimize runtime
-            # IF YOU WANT TO REVERT TO PREVIOUS VERSION FOR RUNTIME SPEED, COMMENT OUT THE FOLLOWING 5 LINES AND REMOVE A TAB FROM THE LINE AFTER
+            # Check for reverse complement
             rev_comp=reverse_complement(kmer)
             if(rev_comp in kmer_counts.keys()):
                 num_complements+=1
                 kmer_counts[rev_comp] = kmer_counts.get(rev_comp,0)+1
             else:
                 kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
-        
-        # M = 114 with the change
-        # M=118 after the change
+       
     print(num_complements)
     # Create kmer distribution histogram
     histogram = {}
