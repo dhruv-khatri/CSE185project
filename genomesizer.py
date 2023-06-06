@@ -234,21 +234,7 @@ with open(input_file, 'r') as file:
     max_value = max(trimmed_sorted_histogram.values())
     max_k = [key for key, value in trimmed_sorted_histogram.items() if value == max_value][0]
     mean_kmer_coverage=max_k
-    # Walk along histogram to get mean kmer coverage
-    #for frequency in range(min_key, max_key-9):
-    #    if(trimmed_sorted_histogram[frequency]>trimmed_sorted_histogram[frequency+1]
-    #       and trimmed_sorted_histogram[frequency+1]>trimmed_sorted_histogram[frequency+2]
-    #       and trimmed_sorted_histogram[frequency+2]>trimmed_sorted_histogram[frequency+3]
-    #       and trimmed_sorted_histogram[frequency+3]>trimmed_sorted_histogram[frequency+4]
-    #       and trimmed_sorted_histogram[frequency+4]>trimmed_sorted_histogram[frequency+5]
-    #       and trimmed_sorted_histogram[frequency+5]>trimmed_sorted_histogram[frequency+6]
-    #       and trimmed_sorted_histogram[frequency+6]>trimmed_sorted_histogram[frequency+7]
-    #       and trimmed_sorted_histogram[frequency+7]>trimmed_sorted_histogram[frequency+8]
-    #       and trimmed_sorted_histogram[frequency+8]>trimmed_sorted_histogram[frequency+9]
-    #       and trimmed_sorted_histogram[frequency+9]>trimmed_sorted_histogram[frequency+10]):
-    #        mean_kmer_coverage=frequency
-    #        break
-
+    
     num_kmers_obs=0
     for frequency in range(cut_freq+1,max_key+1):
         num_kmers_obs+=trimmed_sorted_histogram[frequency]*frequency
