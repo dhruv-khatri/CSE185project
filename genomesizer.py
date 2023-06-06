@@ -11,7 +11,7 @@ parser.add_argument('input_file', help='Path to the file')
 
 # -k is an optional argument that presets k-mer size
 parser.add_argument('-k', '--kmersize', help='length of k-mers for size estimation')
-# -h is an optional argument for help message
+# -o is an optional argument for output directory
 parser.add_argument('-o', '--output', help="output file location")
 
 # -c is an optional argument for maximum cut threshold for error frequencies
