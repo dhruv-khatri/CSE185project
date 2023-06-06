@@ -31,6 +31,7 @@ python genomesizer.py example.fastq -k 25 -o output.histo
 There are 2 optional inputs for the ```genomesizer``` tool. Users may specify the options below:
  - ```-k```, ```--kmer-size``` length of k-mers for size estimation
  - ```-o```, ```--output``` output file location
+ - ```-c```, ```--maxcut``` maximum threshold frequency for cutting off error (recommended for small datasets)
 
 # File Format
 There will be a .histo file output.
