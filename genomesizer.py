@@ -217,7 +217,7 @@ with open(input_file, 'r') as file:
         while(max_cut_freq>max_key):
             max_cut_freq=int(max_cut_freq/2)
         print("New maximum cut frequency: "+max_cut_freq)
-    if (cut_freq>1000 or cut_freq>max_cut_freq):
+    if (cut_freq>max_cut_freq):
         cut_freq=max_cut_freq
     print(cut_freq)
     error_kmers=0
