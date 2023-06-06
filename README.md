@@ -1,4 +1,4 @@
-# GenomeSizer (CSE185project) in progress
+# GenomeSizer
 
 Genome size is a necessary measure for analyses such as quality control, comparative genomics, and metagenomics. GenomeSizer is a tool that takes in a .fasta/.fq file and outputs the estimated genome size and a corresponding histogram file. This is comparable to the kmergenie and jellyfish tools for genome size and histogram output.
 
