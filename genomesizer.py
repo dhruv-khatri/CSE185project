@@ -103,7 +103,8 @@ with open(input_file, 'r') as file_check:
         print("File type is invalid. .fastq and .fq types are supported\n")
         sys.exit(1)
 
-#Kmers and counts will be stored in the dictionary kmer_counts
+# Initialize necessary variables
+# Kmers and counts will be stored in the dictionary kmer_counts
 avg_read_length=0
 read_lengths=[]
 kmer_counts={}
