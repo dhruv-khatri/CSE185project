@@ -21,6 +21,8 @@ frequenices (caused by sequence errors). This option is recommended for small da
 args=parser.parse_args()
 
 input_file=args.input_file
+
+# Check if the user specified the k-mer size
 if args.kmersize is not None:
     try:
         kmersize = int(args.kmersize)
@@ -31,6 +33,8 @@ else:
     kmersize = 21
 
 maxcutfreq=args.maxcut
+
+# Check if the user specified the maximum cut threshold
 if (not maxcutfreq==None):
     try:
         maxcutfreq=int(maxcutfreq)
@@ -99,7 +103,7 @@ with open(input_file, 'r') as file_check:
         print("File type is invalid. .fastq and .fq types are supported\n")
         sys.exit(1)
 
-# Our kmers and counts will be stored in the dictionary kmer_counts
+#Kmers and counts will be stored in the dictionary kmer_counts
 avg_read_length=0
 read_lengths=[]
 kmer_counts={}
@@ -118,7 +122,7 @@ with open(input_file, 'r') as read_length_file:
         
         
         # Check if end of file is reached
-        # Modified to account for degenerate input
+        # Accounts for degenerate input
         if(not header or not sequence or not plus or not quality):
             break
         read_lengths.append(len(sequence))
@@ -138,7 +142,7 @@ with open(input_file, 'r') as file:
     # Placeholder default value for kmer_size
     kmer_size=np.min(read_lengths)/2
     kmer_size = int(kmer_size)
-    # set k-mer length manually if it is provided by user
+    # Set k-mer length manually if it is provided by user
     if(not kmersize==None):
         if(not kmersize>np.min(read_lengths)):
             kmer_size=kmersize
@@ -164,7 +168,7 @@ with open(input_file, 'r') as file:
         if(not header or not sequence or not plus or not quality):
             break
 
-        # increment read count by 1
+        #Increments read count by 1
         number_reads+=1
 
         # Process the sequence to count kmers
@@ -202,10 +206,7 @@ with open(input_file, 'r') as file:
     trimmed_sorted_histogram=dict(sorted_histogram)
     cut_freq=-1
     max_key=max(list(trimmed_sorted_histogram.keys()))
-    # Make dynamic algorithm for finding cut frequency and count
-    # observed kmers manually (don't know how many error reads)
-
-    # Loop below inaccurate in small datasets
+    # Dynamic algorithm for finding cut frequency and count
     for frequency in range(1, max_key-1):
         if(trimmed_sorted_histogram[frequency]<trimmed_sorted_histogram[frequency+1]
            and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
