@@ -28,7 +28,7 @@ python genomesizer.py example.fastq -k 25 -o output.histo
 ```
 
 # genomesizer options
-There are 2 optional inputs for the ```genomesizer``` tool. Users may specify the options below:
+There are 3 optional inputs for the ```genomesizer``` tool. Users may specify the options below:
  - ```-k```, ```--kmer-size``` length of k-mers for size estimation
  - ```-o```, ```--output``` output file location
  - ```-c```, ```--maxcut``` maximum threshold frequency for cutting off error, determines which part of merged peaks to preserve (recommended for small datasets)
