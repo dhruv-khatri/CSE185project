@@ -11,7 +11,7 @@ pip install argparse
 pip install matplotlib
 pip install numpy
 ```
-Once the required libraries are installed, you can download genomesizer using the following command (make sure you are in desired directory).
+Once the required libraries are installed, you can download genomesizer and enter its directory using the following commands (make sure you are in desired directory).
 ```
 git clone https://github.com/dhruv-khatri/GenomeSizer
   cd GenomeSizer
