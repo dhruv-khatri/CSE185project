@@ -1,4 +1,4 @@
-""" 
+"""  
 Kmer Count and Genome Size Estimation
 
 This script reads a FASTQ file containing DNA sequences and estimates the genome size
