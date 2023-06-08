@@ -33,7 +33,7 @@ There are 3 optional inputs for the ```genomesizer``` tool. Users may specify th
  - ```-k```, ```--kmer-size``` length of k-mers for size estimation
  - ```-o```, ```--output``` output file location
  - ```-c```, ```--maxcut``` maximum threshold frequency for cutting off error, determines which part of merged peaks to preserve (recommended for small datasets)
-    - Value can be determined by running genomesizer once and referencing output .histo file for location of peaks
+    - Value can be determined by running genomesizer once and referencing output .histo file for location of error spikes
 
 # File Format
 There will be a .histo file output.
