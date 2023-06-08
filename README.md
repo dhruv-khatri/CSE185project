@@ -16,7 +16,7 @@ Once the required libraries are installed, you can download genomesizer using th
 git clone https://github.com/dhruv-khatri/GenomeSizer
   cd GenomeSizer
 ```
-If the download was successful, typing ``` python genomesizer.py --help``` should show a relevant message.
+If the download was successful, typing ```python genomesizer.py --help``` should show a relevant message.
 
 # Basic Usage
 The basic usage of ```genomesizer``` is 
