@@ -168,7 +168,7 @@ with open(input_file, 'r') as file:
             kmer_size=kmersize
         else:
             print("User provided k-mer size larger than read length. \nUsing default value.\n")
-    num_complements=0
+    
     # Process first sequence to count kmers
     for i in range(len(sequence) - kmer_size + 1):
         kmer = sequence[i : i + kmer_size]
@@ -197,12 +197,11 @@ with open(input_file, 'r') as file:
             # Check for reverse complement
             rev_comp=reverse_complement(kmer)
             if(rev_comp in kmer_counts.keys()):
-                num_complements+=1
                 kmer_counts[rev_comp] = kmer_counts.get(rev_comp,0)+1
             else:
                 kmer_counts[kmer] = kmer_counts.get(kmer, 0) + 1
        
-    print(num_complements)
+    
     # Create kmer distribution histogram
     histogram = {}
 
@@ -232,6 +231,7 @@ with open(input_file, 'r') as file:
            and trimmed_sorted_histogram[frequency+1]<trimmed_sorted_histogram[frequency+2]):
             cut_freq=frequency
             break
+    # Dynamically find cut frequency
     max_cut_freq=maxcutfreq
     if (max_cut_freq>max_key):
         print("Argument provided to -c option was greater than largest frequency. Reducing to fit data size.")
@@ -240,18 +240,21 @@ with open(input_file, 'r') as file:
         print("New maximum cut frequency: "+max_cut_freq)
     if (cut_freq>max_cut_freq):
         cut_freq=max_cut_freq
-    print(cut_freq)
+    
+    # Remove error kmers from genome size calculation
     error_kmers=0
     if(not cut_freq==-1):
         for i in range(1, cut_freq+1):
             error_kmers+=trimmed_sorted_histogram[i]*i
             trimmed_sorted_histogram.pop(i)
 
+    # Find mean kmer coverage from histogram file
     min_key=min(list(trimmed_sorted_histogram.keys()))
     max_value = max(trimmed_sorted_histogram.values())
     max_k = [key for key, value in trimmed_sorted_histogram.items() if value == max_value][0]
     mean_kmer_coverage=max_k
     
+    # Find number of observed kmers
     num_kmers_obs=0
     for frequency in range(cut_freq+1,max_key+1):
         num_kmers_obs+=trimmed_sorted_histogram[frequency]*frequency
