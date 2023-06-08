@@ -1,3 +1,22 @@
+"""
+Kmer Count and Genome Size Estimation
+
+This script reads a FASTQ file containing DNA sequences and estimates the genome size
+based on k-mer counting. It also generates a histogram of k-mer frequencies.
+
+Authors: Chris Lingunis and Dhruv Khatri
+
+Usage: python genomesizer.py [input_file] [-o output_file] [-k kmer_size] [-c max_cut_freq]
+
+Arguments:
+  input_file      : Input FASTQ file containing DNA sequences
+  -o output_file  : Output file to store the histogram data
+  -k kmer_size    : Optional argument to specify the k-mer size (default is half of the minimum read length)
+  -c max_cut_freq : Optional argument to specify the maximum cut frequency for trimming reads with sequencing errors
+
+Note: The input FASTQ file should be in the standard 4-line format.
+"""
+
 import argparse
 import os
 import sys
