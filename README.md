@@ -14,8 +14,7 @@ pip install numpy
 Once the required libraries are installed, you can install genomesizer using the following command (make sure you are in desired directory).
 ```
 git clone https://github.com/dhruv-khatri/GenomeSizer
-  cd main
-  make
+  cd GenomeSizer
 ```
 If the install was successful, typing ```genomesizer.py --help``` should show a relevant message.
 
