@@ -27,7 +27,7 @@ To run ```genomesizer``` on a small test example
 ```
 python genomesizer.py example.fastq -k 25 -o output.histo
 ```
-
+genomesizer runs most smoothly when providing absolute file paths to example.fastq and the output.histo
 # genomesizer options
 There are 3 optional inputs for the ```genomesizer``` tool. Users may specify the options below:
  - ```-k```, ```--kmer-size``` length of k-mers for size estimation
